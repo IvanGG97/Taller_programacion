@@ -107,6 +107,36 @@ def mostrar_matriz(matriz):
   for fila in matriz:
     print(fila)
 
+def suma_diagonal_principal(matriz):
+  suma=0
+  n=len(matriz)
+  for i in range(n):
+    suma += matriz[i][i]
+  return suma
+
+def calcular_factorial(numero):
+  if numero == 0 or numero == 1:
+    return 1
+  else:
+    factorial=1
+    for i in range(2,numero+1):
+      factorial *= i
+    return factorial
+
+def numeros_mayores_suma(matriz,suma):
+  vector=[]
+  for fila in matriz:
+    for elemento in fila:
+      if calcular_factorial(elemento) >= suma_diagonal_principal(matriz):
+        vector.append(elemento)
+  return vector
+
+def eliminar_repetidos(vector):
+  return list(set(vector))
+
+def ordenar_vector(vector):
+  return sorted(vector)
+
 def menu():
   while True:
     print('-Menu de ejercicios-')
@@ -116,6 +146,7 @@ def menu():
     print('4. Contador de vocales y consonantes.')
     print('5. Menu ejercicio 5.')
     print('6. Menu ejercicio 6.')
+    print('7. Operaciones en matriz')
 
     opcion = int(input('Ingrese la opcion: '))
 
@@ -217,6 +248,15 @@ def menu():
             mostrar_matriz(C)
           else:
             print('No se puede realizar el producto. ')
+    elif opcion == 7:
+      dimension=int(input('Ingresar la dimension de la matriz: '))
+      A=cargar_matriz(dimension,dimension)
+      suma_diag_princ=suma_diagonal_principal(A)
+      print(f'La suma de la diagonal principal de la matriz A es : {suma_diag_princ}')
+      vector_mayor=numeros_mayores_suma(A,suma_diag_princ)
+      vector_sin_repeticion=eliminar_repetidos(vector_mayor)
+      vector_ordenado=ordenar_vector(vector_sin_repeticion)
+      print(vector_ordenado)
       break
 if __name__ == '__main__':
   menu()
