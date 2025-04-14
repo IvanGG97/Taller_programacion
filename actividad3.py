@@ -137,6 +137,84 @@ def eliminar_repetidos(vector):
 def ordenar_vector(vector):
   return sorted(vector)
 
+def cargar_matriz_productos():
+  matriz=[['Licuadora','Philips','150.00','0'],
+          ['Plancha','Atma','160.00','2'],
+          ['Equipo Musica','Sony','850.00','3'],
+          ['Heladera','Dream','1000','2'],
+          ['Lavarropas','Dream','1500','2'],
+          ['Televisor','Philips','700','0']]
+  while True:
+    nombre= input("Ingrese el nombre del producto (o 'F' para terminar): ")
+    if nombre.upper()== 'F':
+      break
+    proveedor=input('Ingrese el proveedor: ')
+    precio=float(input('Ingrese el precio: '))
+    cantidad=int(input('Ingrese la cantidad: '))
+    matriz.append([nombre,proveedor,str(precio),str(cantidad)])
+  return matriz
+
+def mostrar_electrodomestico_prov(matriz):
+  proveedor=input('Ingresar el nombre del proveedor: ')
+  matriz_productos_proveedor=[]
+  for fila in matriz:
+    if fila[1] == proveedor:
+      matriz_productos_proveedor.append([fila[0],fila[1],fila[2],fila[3]])
+  if len(matriz_productos_proveedor) == 0:
+    print('No hay productos de ese proveedor. ')
+  else:
+    return matriz_productos_proveedor
+  
+def menor_precio(matriz):
+  menor_precio =float(matriz[0][2])
+  electrodomestico_menor_precio=matriz[0]
+  for electrodomestico in matriz:
+    precio=float(electrodomestico[2])
+    if precio < menor_precio:
+      menor_precio=precio
+      electrodomestico_menor_precio=electrodomestico
+  return print(f"El electrodomestico con menor precio es {electrodomestico_menor_precio[0]},{electrodomestico_menor_precio[1]},${electrodomestico_menor_precio[2]},cantidad: {electrodomestico_menor_precio[3]}")
+  
+
+def productos_stock_positivo(matriz):
+  matriz_prod_positivos=[]
+  for producto in matriz:
+    cantidad=int(producto[3])
+    if cantidad > 0:
+      matriz_prod_positivos.append([producto[0],producto[1],producto[2],producto[3]])
+  return matriz_prod_positivos
+
+def agregar_paciente(lista):
+  nombre_apellido=input('Ingresar nombre y apellido: ')
+  lista.append(nombre_apellido)
+  return lista
+
+def atender_paciente(lista):
+  if not lista:
+    return print('No hay pacientes en la lista de espera. ')
+  paciente_atendido= lista.pop(0)
+  return print(f'El paciente {paciente_atendido} ha sido atendido y eliminado de la lista de espera.')
+
+
+def atender_paciente_urgencia(lista):
+  if not lista:
+    return print('No hay pacientes en la lista de espera.')
+  nombre=input('Ingrese el nombre y el apellido del paciente con urgencia: ')
+  if nombre in lista:
+    lista.remove(nombre)
+    lista.insert(0,nombre)
+    print(f'El paciente {nombre} ha sido atendido con urgencia y puesto al principio de la lista de espera')
+  else:
+    print(f'El paciente {nombre} no fue encontrado en la lista de espera')
+
+def pacientes_faltantes(lista):
+  nombre=input('Ingrese el nombre y el apellido del paciente: ')
+  if nombre in lista:
+    posicion = lista.index(nombre)
+    print(f'Falta {posicion} pacientes para que {nombre} se antendid@. ')
+  else:
+    print(f'Paciente {nombre} no encontrado en la lista de espera.')
+
 def menu():
   while True:
     print('-Menu de ejercicios-')
@@ -146,8 +224,9 @@ def menu():
     print('4. Contador de vocales y consonantes.')
     print('5. Menu ejercicio 5.')
     print('6. Menu ejercicio 6.')
-    print('7. Operaciones en matriz')
-
+    print('7. Operaciones en matriz.')
+    print('8. Menu ejercicio 8.')
+    print('9. Consultorio Médico.')
     opcion = int(input('Ingrese la opcion: '))
 
     if opcion == 1:
@@ -258,5 +337,61 @@ def menu():
       vector_ordenado=ordenar_vector(vector_sin_repeticion)
       print(vector_ordenado)
       break
+    elif opcion == 8:
+      print('1. Cargar Producto')
+      print('2. Mostrar electrodomesticos por proveedor.')
+      print('3. Mostrar electrodomesticos con el menor precio.')
+      print('4. Mostrar electrodomesticos con el stock positivo.')
+
+      opcion = int(input('Ingresar la opcion: '))
+      if opcion == 1:
+        matriz_productos=cargar_matriz_productos()
+        mostrar_matriz(matriz_productos)
+        break
+      elif opcion == 2:
+        matriz_productos=cargar_matriz_productos()
+        matriz_proveedor=mostrar_electrodomestico_prov(matriz_productos)
+        mostrar_matriz(matriz_proveedor)
+        break
+      elif opcion == 3:
+        matriz_productos=cargar_matriz_productos()
+        menor_precio(matriz_productos)
+        break
+      elif opcion == 4:
+        matriz_productos=cargar_matriz_productos()
+        matriz_prod_pos=productos_stock_positivo(matriz_productos)
+        mostrar_matriz(matriz_prod_pos)
+        break
+      else:
+        print('Opcion fuera de rango.')
+      break
+    elif opcion == 9:
+      lista_espera=[]
+      while True :
+        print('1. Ingresar un paciente a la lista de espera.')
+        print('2. Atender al siguiente paciente.')
+        print('3. Atender un paciente de urgencia.')
+        print('4. Determinar cuantos pacientes faltan.')
+        print('5. Mostrar lista de espera.')
+        print('6. Salir')
+        opcion = int(input('Ingresar la opcion: '))
+        if opcion == 1:
+          agregar_paciente(lista_espera)
+        elif opcion == 2:
+          atender_paciente(lista_espera)
+        elif opcion == 3 :
+          atender_paciente_urgencia(lista_espera)
+        elif opcion == 4:
+          pacientes_faltantes(lista_espera)
+        elif opcion == 5:
+          print(lista_espera)
+        elif opcion == 6:
+          break
+        else:
+          print('Opcion no valida.')
+    elif opcion == 10:
+      print('Ejercicio 10')
+
+
 if __name__ == '__main__':
   menu()
