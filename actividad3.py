@@ -1,3 +1,4 @@
+import random
 def ingresar_numero_entero():
   numero=int(input('Ingresar un numero entero: '))
   return numero
@@ -215,6 +216,24 @@ def pacientes_faltantes(lista):
   else:
     print(f'Paciente {nombre} no encontrado en la lista de espera.')
 
+def rotar_vector(vector, cantidad):
+    return vector[-cantidad:] + vector[:-cantidad]
+
+def mostrar_rodillos(rodillo1, rodillo2, rodillo3):
+  for i in range(3):
+    print(f"{rodillo1[i]} | {rodillo2[i]} | {rodillo3[i]}")
+  print()
+
+def verificar_premio(rodillo1, rodillo2, rodillo3):
+  if rodillo1[0] == rodillo2[0] == rodillo3[0] == 'X':
+    print("¡Ganó 10 fichas!")
+  elif rodillo1[0] == rodillo2[0] == rodillo3[0] == 'O':
+    print("¡Ganó 100 fichas!")
+  elif rodillo1[0] == rodillo2[0] == rodillo3[0] == '7':
+    print("¡Ganó 1000 fichas!")
+  else:
+    print("No hay premio.")
+
 def menu():
   while True:
     print('-Menu de ejercicios-')
@@ -227,6 +246,7 @@ def menu():
     print('7. Operaciones en matriz.')
     print('8. Menu ejercicio 8.')
     print('9. Consultorio Médico.')
+    print('10. Juego')
     opcion = int(input('Ingrese la opcion: '))
 
     if opcion == 1:
@@ -390,8 +410,36 @@ def menu():
         else:
           print('Opcion no valida.')
     elif opcion == 10:
-      print('Ejercicio 10')
+      simbolos=['O','X','7']
+      rodillo1 = simbolos *3
+      rodillo2 = simbolos *3
+      rodillo3 = simbolos *3
+      while True:
+        print('Rodillos antes de girar: ')
+        mostrar_rodillos(rodillo1, rodillo2, rodillo3)
+
+        rotacion1 = random.randint(0, 9)
+        rotacion2 = random.randint(0, 9)
+        rotacion3 = random.randint(0, 9)
+
+        print(f"Rotaciones: {rotacion1}, {rotacion2}, {rotacion3}")
+        rodillo1 = rotar_vector(rodillo1, rotacion1)
+        rodillo2 = rotar_vector(rodillo2, rotacion2)
+        rodillo3 = rotar_vector(rodillo3, rotacion3)
+
+        print("Rodillos después de girar:")
+        mostrar_rodillos(rodillo1, rodillo2, rodillo3)
 
 
+        verificar_premio(rodillo1, rodillo2, rodillo3)
+
+        jugar_nuevamente = input("¿Desea jugar de nuevo? (s/n): ").lower()
+        if jugar_nuevamente != 's':
+          break
+    elif opcion == 0:
+      print('Adios')
+      break
+    else:
+      print('Opcion incorrecta')
 if __name__ == '__main__':
   menu()
